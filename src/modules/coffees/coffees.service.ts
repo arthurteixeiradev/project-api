@@ -1,9 +1,10 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { CoffeeInfo } from './types/Coffee';
+import { CoffeeInfo } from '../../types/Coffee';
+import { CoffeeDto } from '../../dto/CoffeeDTO';
 
 @Injectable()
-export class AppService {
-  private readonly coffees: CoffeeInfo[] = [
+export class CoffeesService {
+  private readonly coffees: CoffeeDto[] = [
     {
       id: 1,
       nome: 'Paraíso',
@@ -37,11 +38,11 @@ export class AppService {
     return 'Hello World!';
   }
 
-  getCoffees(): CoffeeInfo[] {
+  getCoffees(): CoffeeDto[] {
     return this.coffees;
   }
 
-  getCoffeeById(id: number): CoffeeInfo | undefined {
+  getCoffeeById(id: number): CoffeeDto | undefined {
     return this.coffees.find((coffee: CoffeeInfo) => coffee.id === id);
   }
 
