@@ -1,5 +1,4 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { CoffeeInfo } from '../../types/Coffee';
 import { CoffeeDto } from '../../dto/CoffeeDTO';
 
 @Injectable()
@@ -43,20 +42,20 @@ export class CoffeesService {
   }
 
   getCoffeeById(id: number): CoffeeDto | undefined {
-    return this.coffees.find((coffee: CoffeeInfo) => coffee.id === id);
+    return this.coffees.find((coffee) => coffee.id === id);
   }
 
-  postCoffee(coffee: CoffeeInfo) {
-    const coffeeExists = this.coffees.find(
-      (c: CoffeeInfo) => c.id === coffee.id,
-    );
+  postCoffee(coffee: CoffeeDto) {
+    const coffeeExists = this.coffees.find((c) => c.id === coffee.id);
 
     if (coffeeExists) {
       throw new BadRequestException(
-        `Café com id '${coffee.id}' ja cadastrado.`,
+        `Café com id '${coffee.id}' já cadastrado.`,
       );
     }
 
-    return;
+    this.coffees.push(coffee);
+
+    return coffee;
   }
 }
