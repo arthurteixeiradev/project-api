@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Param, Post } from '@nestjs/common';
-import { CoffeeDto } from '../../dto/CreateCoffeeDto.ts';
 import { CoffeesService } from './coffees.service';
+import { CoffeeDto } from 'src/dto/CreateCoffeeDto.ts';
 
 @Controller()
 export class CoffeesController {

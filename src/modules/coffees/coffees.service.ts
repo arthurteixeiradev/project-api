@@ -3,7 +3,7 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { CoffeeDto } from '../../dto/CreateCoffeeDto.ts';
+import { CoffeeDto } from 'src/dto/CreateCoffeeDto.ts';
 
 @Injectable()
 export class CoffeesService {
