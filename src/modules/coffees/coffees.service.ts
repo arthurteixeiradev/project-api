@@ -1,5 +1,9 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
-import { CoffeeDto } from '../../dto/CoffeeDTO';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
+import { CoffeeDto } from '../../dto/CreateCoffeeDto.ts';
 
 @Injectable()
 export class CoffeesService {
@@ -42,16 +46,20 @@ export class CoffeesService {
   }
 
   getCoffeeById(id: number): CoffeeDto | undefined {
-    return this.coffees.find((coffee) => coffee.id === id);
+    const coffee = this.coffees.find((coffee) => coffee.id === id);
+
+    if (!coffee) {
+      throw new NotFoundException(`Café com id '${id}' não encontrado.`);
+    }
+
+    return coffee;
   }
 
   postCoffee(coffee: CoffeeDto) {
     const coffeeExists = this.coffees.find((c) => c.id === coffee.id);
 
     if (coffeeExists) {
-      throw new BadRequestException(
-        `Café com id '${coffee.id}' já cadastrado.`,
-      );
+      throw new BadRequestException('Dados inválidos ou ID já existente.');
     }
 
     this.coffees.push(coffee);

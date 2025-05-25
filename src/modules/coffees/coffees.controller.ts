@@ -1,12 +1,5 @@
-import {
-  Body,
-  Controller,
-  Get,
-  NotFoundException,
-  Param,
-  Post,
-} from '@nestjs/common';
-import { CoffeeDto } from '../../dto/CoffeeDTO';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { CoffeeDto } from '../../dto/CreateCoffeeDto.ts';
 import { CoffeesService } from './coffees.service';
 
 @Controller()
@@ -24,14 +17,8 @@ export class CoffeesController {
   }
 
   @Get('/coffees/:id/detalhes')
-  getCoffeeDetails(@Param('id') id: number): CoffeeDto {
-    const coffee = this.coffeesService.getCoffeeById(id);
-
-    if (!coffee) {
-      throw new NotFoundException(`Café com id '${id}' não encontrado.`);
-    }
-
-    return coffee;
+  getCoffeeDetails(@Param('id') id: number): CoffeeDto | undefined {
+    return this.coffeesService.getCoffeeById(id);
   }
 
   @Post('/create-coffee')

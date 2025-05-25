@@ -14,18 +14,14 @@ export class CoffeeDto {
   tipo: string;
 
   @IsNumber()
-  @IsNotEmpty()
   quantidade: number;
 
   @IsNumber()
-  @IsNotEmpty()
   preco: number;
 
   @IsString()
-  @IsNotEmpty()
   descricao: string;
 
   @IsArray()
-  @IsNotEmpty()
   tags: string[];
 }
