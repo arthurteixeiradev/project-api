@@ -5,8 +5,8 @@
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 generator client {
-  provider        = "prisma-client-js"
-  previewFeatures = ["driverAdapters"]
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
 }
 
 datasource db {
@@ -14,8 +14,66 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
-  id    Int    @id @default(autoincrement())
-  name  String
-  email String @unique
+model Cafe {
+  id          Int          @id @default(autoincrement())
+  nome        String
+  tipo        String
+  preco       Float
+  descricao   String
+  tags        TagCafe[]
+  itensPedido ItemPedido[]
+}
+
+model Pedido {
+  id          Int          @id @default(autoincrement())
+  clienteId   Int
+  cliente     Cliente      @relation(fields: [clienteId], references: [id])
+  dataPedido  DateTime     @default(now())
+  total       Float
+  itensPedido ItemPedido[]
+  entrega     Entrega?
+}
+
+model ItemPedido {
+  id            Int    @id @default(autoincrement())
+  cafeId        Int
+  cafe          Cafe   @relation(fields: [cafeId], references: [id])
+  pedidoId      Int
+  pedido        Pedido @relation(fields: [pedidoId], references: [id])
+  quantidade    Int
+  precoUnitario Float
+
+  @@unique([cafeId, pedidoId])
+}
+
+model TagCafe {
+  id     Int    @id @default(autoincrement())
+  nome   String
+  cafeId Int
+  cafe   Cafe   @relation(fields: [cafeId], references: [id])
+}
+
+model Entrega {
+  id           Int           @id @default(autoincrement())
+  pedidoId     Int           @unique
+  pedido       Pedido        @relation(fields: [pedidoId], references: [id])
+  endereco     String
+  status       StatusEntrega @default(PENDENTE)
+  dataPrevista DateTime
+}
+
+model Cliente {
+  id       Int      @id @default(autoincrement())
+  nome     String
+  email    String   @unique
+  cpf      String   @unique
+  telefone String
+  pedidos  Pedido[]
+}
+
+enum StatusEntrega {
+  PENDENTE
+  EM_TRANSITO
+  ENTREGUE
+  CANCELADO
 }

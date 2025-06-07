@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
 import { CoffeesService } from './coffees.service';
 import { CoffeeDto } from 'src/dto/CreateCoffeeDto.ts';
 
@@ -24,5 +24,13 @@ export class CoffeesController {
   @Post('/create-coffee')
   createCoffee(@Body() coffee: CoffeeDto) {
     return this.coffeesService.postCoffee(coffee);
+  }
+
+  @Get('/coffees/create-query-all')
+  coffeeQueryAll(
+    @Query('startDate') startDate?: string,
+    @Query('endDate') endDate?: string,
+  ): CoffeeDto[] {
+    return this.coffeesService.getCoffeesByDate(startDate, endDate);
   }
 }

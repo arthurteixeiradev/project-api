@@ -16,6 +16,7 @@ export class CoffeesService {
       preco: 10,
       descricao: 'Café de qualidade',
       tags: ['tradicional'],
+      date_created: '2025-05-31T23:10:35.000Z',
     },
     {
       id: 2,
@@ -25,6 +26,7 @@ export class CoffeesService {
       preco: 10,
       descricao: 'Café de qualidade',
       tags: ['tradicional', 'vegano'],
+      date_created: '2025-05-30T23:10:35.000Z',
     },
     {
       id: 3,
@@ -34,6 +36,7 @@ export class CoffeesService {
       preco: 10,
       descricao: 'Café de qualidade',
       tags: ['tradicional', 'Extra forte'],
+      date_created: '2025-05-30T23:10:35.000Z',
     },
   ];
 
@@ -62,8 +65,36 @@ export class CoffeesService {
       throw new BadRequestException('Dados inválidos ou ID já existente.');
     }
 
+    coffee.date_created = new Date().toISOString();
+
     this.coffees.push(coffee);
 
     return coffee;
+  }
+
+  getCoffeesByDate(
+    startDateString?: string,
+    endDateString?: string,
+  ): CoffeeDto[] {
+    let filteredCoffees = [...this.coffees];
+
+    const startDate = startDateString ? new Date(startDateString) : null;
+    const endDate = endDateString ? new Date(endDateString) : null;
+
+    if (startDate) {
+      filteredCoffees = filteredCoffees.filter((coffee) => {
+        const coffeeDate = new Date(coffee.date_created);
+        return coffeeDate >= startDate;
+      });
+    }
+
+    if (endDate) {
+      filteredCoffees = filteredCoffees.filter((coffee) => {
+        const coffeeDate = new Date(coffee.date_created);
+        return coffeeDate <= endDate;
+      });
+    }
+
+    return filteredCoffees;
   }
 }

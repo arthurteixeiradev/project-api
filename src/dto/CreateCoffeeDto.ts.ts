@@ -1,4 +1,10 @@
-import { IsArray, IsNotEmpty, IsNumber, IsString } from 'class-validator';
+import {
+  IsArray,
+  IsNotEmpty,
+  IsNumber,
+  IsOptional,
+  IsString,
+} from 'class-validator';
 
 export class CoffeeDto {
   @IsNumber()
@@ -24,4 +30,8 @@ export class CoffeeDto {
 
   @IsArray()
   tags: string[];
+
+  @IsString()
+  @IsOptional()
+  date_created: string;
 }
